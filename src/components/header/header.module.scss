@@ -1,0 +1,40 @@
+.header {
+  padding: 1.25rem 0;
+  background-color: $dark-green;
+  &__input {
+    background-color: $gray;
+    border-radius: 0.25rem;
+    padding: 0.563rem 1rem;
+    margin-right: 0.5rem;
+    max-height: 41px;
+    width: 57.125rem;
+    color: black;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.5rem;
+    letter-spacing: 0.011rem;
+    @media (max-width: 1440.99px) {
+      width: 80vw;
+    }
+    @media (max-width: 768.99px) {
+      width: 50vw;
+    }
+    ::placeholder {
+      font-style: italic;
+      font-weight: 400;
+    }
+  }
+  &__button {
+    font-size: 0.938rem;
+    line-height: 1.625rem;
+    letter-spacing: 0.029rem;
+    text-transform: uppercase;
+    background-color: $blue;
+    // padding: 0.5rem 1.575rem;
+    height: 42px;
+    border-radius: 0.25rem;
+    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
+      0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+    color: white;
+  }
+}
