@@ -12,7 +12,6 @@ const repoSlice = createSlice({
   initialState,
   reducers: {
     searchRepo: (state, action: PayloadAction<string>) => {
-      console.log(action, "reposlice");
       state.searchValue = action.payload ?? state.searchValue;
     },
   },

@@ -1,9 +1,7 @@
-import React from "react";
 import { Typography, Box, Chip } from "@mui/material";
 import { IDetailedInfo } from "src/services/types";
 import StarRateIcon from "@mui/icons-material/StarRate";
 const DetailedInfo = ({ currentRow, currentRowClick }: IDetailedInfo) => {
-  console.log(currentRow, "currentROw");
   return (
     <>
       <Box
@@ -13,10 +11,9 @@ const DetailedInfo = ({ currentRow, currentRowClick }: IDetailedInfo) => {
           display: "flex",
           justifyContent: "center",
           alignItems: "flex-start",
-          height: "100%",
           backgroundColor: "#F2F2F2",
           padding: "1.5rem",
-          textAlign: "center",
+          textAlign: "left",
         }}
       >
         {currentRowClick ? (
@@ -24,8 +21,9 @@ const DetailedInfo = ({ currentRow, currentRowClick }: IDetailedInfo) => {
             <Box
               width="100%"
               display="flex"
-              justifyContent="center"
+              justifyContent="flex-start"
               flexDirection="column"
+              height="100vh"
             >
               <Typography
                 sx={{
@@ -76,13 +74,11 @@ const DetailedInfo = ({ currentRow, currentRowClick }: IDetailedInfo) => {
                       sx={{ mr: "1rem", marginBottom: "0.3rem" }}
                       size="small"
                       label={lang.name || "Язык не указан"}
+                      key={lang.name}
                     />
                   );
                 })}
               </Box>
-              <Typography>
-                {currentRow.desc ?? "Описание отсутствует"}
-              </Typography>
               <Typography>
                 {currentRow.license ?? "Лицензия отсутствует"}
               </Typography>
@@ -90,7 +86,19 @@ const DetailedInfo = ({ currentRow, currentRowClick }: IDetailedInfo) => {
           </>
         ) : (
           <>
-            <Typography>Выберите репозитарий</Typography>
+            <Typography
+              fontSize="0.875rem"
+              fontWeight="400"
+              lineHeight="143%"
+              letterSpacing="0.011rem"
+              height="100vh"
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              color="#4F4F4F"
+            >
+              Выберите репозитарий
+            </Typography>
           </>
         )}
       </Box>

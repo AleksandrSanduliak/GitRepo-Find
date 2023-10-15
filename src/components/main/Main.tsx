@@ -1,54 +1,77 @@
-import { Alert, Box, Typography } from "@mui/material";
+import { Alert, Box } from "@mui/material";
 import React from "react";
 import { useGetReposQuery } from "../../services/api";
 import { useAppSelector } from "../../store/store";
-import CircularProgress from "@mui/material/CircularProgress";
 import QueryResultTable from "./QueryResultTable/QueryResultTable";
 import DetailedInfo from "./DetiledInfo/DetailedInfo";
 import WelcomeBlock from "./WelcomeBlock/WelcomeBlock";
-import { IprocessingIncomingData } from "src/services/types";
-
-const Main: React.FC = (): JSX.Element => {
+import { IOptions, IprocessingIncomingData } from "src/services/types";
+import Loader from "./Loader";
+const Main: React.FC = React.memo((): JSX.Element => {
   const searchInp = useAppSelector((store) => store?.repoSlice?.searchValue);
   const [currentRow, setCurrentRow] = React.useState<
     IprocessingIncomingData | {}
   >({});
   const [currentRowClick, setCurrentRowClick] = React.useState<boolean>(false);
-  console.log(searchInp, "main");
+  const [limit, setLimit] = React.useState<number>(25);
+  const [options, setOptions] = React.useState<IOptions>({
+    name: null,
+    after: null,
+    first: null,
+    before: null,
+    last: null,
+  });
+  const [toggle, setToggle] = React.useState<boolean>(false);
+  const [counters, setCounters] = React.useState({
+    first: 1,
+    last: limit,
+  });
+  React.useEffect(() => {
+    setOptions((prevState: IOptions) => {
+      return { ...prevState, name: searchInp, first: limit };
+    });
+  }, [searchInp, limit]);
+
   const { data, isSuccess, isError, isFetching, isLoading } = useGetReposQuery(
-    searchInp,
+    options,
     { skip: searchInp ? false : true }
   );
+
   if (isSuccess) {
     console.log(data);
   }
   if (isLoading || isFetching) {
-    console.log("isLoading");
+    // console.log("isLoading");
+    return <Loader />;
+  }
+  if (isError) {
+    console.log("isError");
     return (
-      <Box
-        display="flex"
-        height="100vh"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <CircularProgress />
-        <Typography>Loading...</Typography>
+      <Box height="100vh">
+        <Alert severity="error">Ошибка поиска, повторите запрос еще раз</Alert>
       </Box>
     );
   }
-  if (isError) {
-    <Alert severity="error">Ошибка поиска, повторите запрос еще раз</Alert>;
-  }
+
   return (
     <main className="main">
-      <div className="main__container">
+      <div>
         {isSuccess ? (
           <>
-            <Box display="flex" height="100vh">
+            <Box display="flex" minHeight="100vh">
               <QueryResultTable
                 dataProps={data}
                 setCurrentRow={setCurrentRow}
                 setCurrentRowClick={setCurrentRowClick}
+                limit={limit}
+                setLimit={setLimit}
+                searchInp={searchInp}
+                options={options}
+                setOptions={setOptions}
+                toggle={toggle}
+                setToggle={setToggle}
+                counters={counters}
+                setCounters={setCounters}
               />
               <DetailedInfo
                 currentRow={currentRow}
@@ -64,6 +87,6 @@ const Main: React.FC = (): JSX.Element => {
       </div>
     </main>
   );
-};
+});
 
 export default Main;

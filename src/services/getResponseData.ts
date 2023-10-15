@@ -1,10 +1,8 @@
 import { IResponse, IResponseData, IprocessingIncomingData } from "./types";
-
 export const processingIncomingData = (
   res: IResponse
-): IprocessingIncomingData[] => {
-  console.log(res?.search?.edges, "res transform response");
-  console.log(typeof res.search, "res standart");
+): IprocessingIncomingData => {
+  console.log(res?.search?.repositoryCount);
   const transform = res?.search?.edges.map(
     (el: IResponseData, index: number): IprocessingIncomingData => {
       return {
@@ -23,6 +21,7 @@ export const processingIncomingData = (
       };
     }
   );
-  console.log(transform, "transfrom");
-  return transform;
+  const repoCount = res?.search?.repositoryCount;
+  const pageInfo = res?.search?.pageInfo;
+  return { transform, repoCount, pageInfo };
 };

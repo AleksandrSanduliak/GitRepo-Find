@@ -5318,6 +5318,8 @@ export type DeploymentProtectionRule = {
   __typename?: 'DeploymentProtectionRule';
   /** Identifies the primary key from the database. */
   databaseId?: Maybe<Scalars['Int']['output']>;
+  /** Whether deployments to this environment can be approved by the user who created the deployment. */
+  preventSelfReview?: Maybe<Scalars['Boolean']['output']>;
   /** The teams or users that can review the deployment */
   reviewers: DeploymentReviewerConnection;
   /** The timeout in minutes for this protection rule. */
@@ -24712,7 +24714,7 @@ export enum SponsorsCountryOrRegionCode {
   Tn = 'TN',
   /** Tonga */
   To = 'TO',
-  /** Turkey */
+  /** Türkiye */
   Tr = 'TR',
   /** Trinidad and Tobago */
   Tt = 'TT',
@@ -27887,6 +27889,8 @@ export type UpdateEnvironmentInput = {
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
   /** The node ID of the environment. */
   environmentId: Scalars['ID']['input'];
+  /** Whether deployments to this environment can be approved by the user who created the deployment. */
+  preventSelfReview?: InputMaybe<Scalars['Boolean']['input']>;
   /** The ids of users or teams that can approve deployments to this environment */
   reviewers?: InputMaybe<Array<Scalars['ID']['input']>>;
   /** The wait timer in minutes. */
@@ -29785,13 +29789,16 @@ export enum WorkflowState {
 export type SearchRepoQueryVariables = Exact<{
   name: Scalars['String']['input'];
   first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
-export type SearchRepoQuery = { __typename?: 'Query', search: { __typename?: 'SearchResultItemConnection', edges?: Array<{ __typename?: 'SearchResultItemEdge', node?: { __typename?: 'App' } | { __typename?: 'Discussion' } | { __typename?: 'Issue' } | { __typename?: 'MarketplaceListing' } | { __typename?: 'Organization' } | { __typename?: 'PullRequest' } | { __typename?: 'Repository', name: string, description?: string | null, url: any, licenseInfo?: { __typename?: 'License', name: string } | null, stargazers: { __typename?: 'StargazerConnection', totalCount: number }, languages?: { __typename?: 'LanguageConnection', nodes?: Array<{ __typename?: 'Language', name: string } | null> | null } | null, forks: { __typename?: 'RepositoryConnection', totalCount: number }, defaultBranchRef?: { __typename?: 'Ref', target?: { __typename?: 'Blob' } | { __typename?: 'Commit', committedDate: any } | { __typename?: 'Tag' } | { __typename?: 'Tree' } | null } | null } | { __typename?: 'User' } | null } | null> | null } };
+export type SearchRepoQuery = { __typename?: 'Query', search: { __typename?: 'SearchResultItemConnection', repositoryCount: number, edges?: Array<{ __typename?: 'SearchResultItemEdge', cursor: string, node?: { __typename?: 'App' } | { __typename?: 'Discussion' } | { __typename?: 'Issue' } | { __typename?: 'MarketplaceListing' } | { __typename?: 'Organization' } | { __typename?: 'PullRequest' } | { __typename?: 'Repository', name: string, description?: string | null, url: any, licenseInfo?: { __typename?: 'License', name: string } | null, stargazers: { __typename?: 'StargazerConnection', totalCount: number }, languages?: { __typename?: 'LanguageConnection', nodes?: Array<{ __typename?: 'Language', name: string } | null> | null } | null, forks: { __typename?: 'RepositoryConnection', totalCount: number }, defaultBranchRef?: { __typename?: 'Ref', target?: { __typename?: 'Blob' } | { __typename?: 'Commit', committedDate: any } | { __typename?: 'Tag' } | { __typename?: 'Tree' } | null } | null } | { __typename?: 'User' } | null } | null> | null, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null, hasPreviousPage: boolean, startCursor?: string | null } } };
 
 
-export const SearchRepoDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"SearchRepo"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"first"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}},"defaultValue":{"kind":"IntValue","value":"100"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"search"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"query"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"Argument","name":{"kind":"Name","value":"type"},"value":{"kind":"EnumValue","value":"REPOSITORY"}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"Variable","name":{"kind":"Name","value":"first"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Repository"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"url"}},{"kind":"Field","name":{"kind":"Name","value":"licenseInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"stargazers"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"totalCount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"languages"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"10"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"forks"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"totalCount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"defaultBranchRef"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"target"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Commit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"committedDate"}}]}}]}}]}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<SearchRepoQuery, SearchRepoQueryVariables>;
+export const SearchRepoDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"SearchRepo"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"first"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"last"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"Int"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"after"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"before"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"search"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"query"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"Argument","name":{"kind":"Name","value":"type"},"value":{"kind":"EnumValue","value":"REPOSITORY"}},{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"Variable","name":{"kind":"Name","value":"first"}}},{"kind":"Argument","name":{"kind":"Name","value":"last"},"value":{"kind":"Variable","name":{"kind":"Name","value":"last"}}},{"kind":"Argument","name":{"kind":"Name","value":"after"},"value":{"kind":"Variable","name":{"kind":"Name","value":"after"}}},{"kind":"Argument","name":{"kind":"Name","value":"before"},"value":{"kind":"Variable","name":{"kind":"Name","value":"before"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Repository"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"url"}},{"kind":"Field","name":{"kind":"Name","value":"licenseInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"stargazers"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"totalCount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"languages"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"first"},"value":{"kind":"IntValue","value":"10"}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nodes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"forks"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"totalCount"}}]}},{"kind":"Field","name":{"kind":"Name","value":"defaultBranchRef"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"target"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Commit"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"committedDate"}}]}}]}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"cursor"}}]}},{"kind":"Field","name":{"kind":"Name","value":"repositoryCount"}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hasNextPage"}},{"kind":"Field","name":{"kind":"Name","value":"endCursor"}},{"kind":"Field","name":{"kind":"Name","value":"hasPreviousPage"}},{"kind":"Field","name":{"kind":"Name","value":"startCursor"}}]}}]}}]}}]} as unknown as DocumentNode<SearchRepoQuery, SearchRepoQueryVariables>;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: { input: string; output: string; }
@@ -35102,6 +35109,8 @@ export type DeploymentProtectionRule = {
   __typename?: 'DeploymentProtectionRule';
   /** Identifies the primary key from the database. */
   databaseId?: Maybe<Scalars['Int']['output']>;
+  /** Whether deployments to this environment can be approved by the user who created the deployment. */
+  preventSelfReview?: Maybe<Scalars['Boolean']['output']>;
   /** The teams or users that can review the deployment */
   reviewers: DeploymentReviewerConnection;
   /** The timeout in minutes for this protection rule. */
@@ -54496,7 +54505,7 @@ export enum SponsorsCountryOrRegionCode {
   Tn = 'TN',
   /** Tonga */
   To = 'TO',
-  /** Turkey */
+  /** Türkiye */
   Tr = 'TR',
   /** Trinidad and Tobago */
   Tt = 'TT',
@@ -57671,6 +57680,8 @@ export type UpdateEnvironmentInput = {
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
   /** The node ID of the environment. */
   environmentId: Scalars['ID']['input'];
+  /** Whether deployments to this environment can be approved by the user who created the deployment. */
+  preventSelfReview?: InputMaybe<Scalars['Boolean']['input']>;
   /** The ids of users or teams that can approve deployments to this environment */
   reviewers?: InputMaybe<Array<Scalars['ID']['input']>>;
   /** The wait timer in minutes. */
@@ -59569,15 +59580,25 @@ export enum WorkflowState {
 export type SearchRepoQueryVariables = Exact<{
   name: Scalars['String']['input'];
   first?: InputMaybe<Scalars['Int']['input']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
-export type SearchRepoQuery = { __typename?: 'Query', search: { __typename?: 'SearchResultItemConnection', edges?: Array<{ __typename?: 'SearchResultItemEdge', node?: { __typename?: 'App' } | { __typename?: 'Discussion' } | { __typename?: 'Issue' } | { __typename?: 'MarketplaceListing' } | { __typename?: 'Organization' } | { __typename?: 'PullRequest' } | { __typename?: 'Repository', name: string, description?: string | null, url: any, licenseInfo?: { __typename?: 'License', name: string } | null, stargazers: { __typename?: 'StargazerConnection', totalCount: number }, languages?: { __typename?: 'LanguageConnection', nodes?: Array<{ __typename?: 'Language', name: string } | null> | null } | null, forks: { __typename?: 'RepositoryConnection', totalCount: number }, defaultBranchRef?: { __typename?: 'Ref', target?: { __typename?: 'Blob' } | { __typename?: 'Commit', committedDate: any } | { __typename?: 'Tag' } | { __typename?: 'Tree' } | null } | null } | { __typename?: 'User' } | null } | null> | null } };
+export type SearchRepoQuery = { __typename?: 'Query', search: { __typename?: 'SearchResultItemConnection', repositoryCount: number, edges?: Array<{ __typename?: 'SearchResultItemEdge', cursor: string, node?: { __typename?: 'App' } | { __typename?: 'Discussion' } | { __typename?: 'Issue' } | { __typename?: 'MarketplaceListing' } | { __typename?: 'Organization' } | { __typename?: 'PullRequest' } | { __typename?: 'Repository', name: string, description?: string | null, url: any, licenseInfo?: { __typename?: 'License', name: string } | null, stargazers: { __typename?: 'StargazerConnection', totalCount: number }, languages?: { __typename?: 'LanguageConnection', nodes?: Array<{ __typename?: 'Language', name: string } | null> | null } | null, forks: { __typename?: 'RepositoryConnection', totalCount: number }, defaultBranchRef?: { __typename?: 'Ref', target?: { __typename?: 'Blob' } | { __typename?: 'Commit', committedDate: any } | { __typename?: 'Tag' } | { __typename?: 'Tree' } | null } | null } | { __typename?: 'User' } | null } | null> | null, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: string | null, hasPreviousPage: boolean, startCursor?: string | null } } };
 
 
 export const SearchRepoDocument = `
-    query SearchRepo($name: String!, $first: Int = 100) {
-  search(query: $name, type: REPOSITORY, first: $first) {
+    query SearchRepo($name: String!, $first: Int, $last: Int, $after: String, $before: String) {
+  search(
+    query: $name
+    type: REPOSITORY
+    first: $first
+    last: $last
+    after: $after
+    before: $before
+  ) {
     edges {
       node {
         ... on Repository {
@@ -59607,6 +59628,14 @@ export const SearchRepoDocument = `
           }
         }
       }
+      cursor
+    }
+    repositoryCount
+    pageInfo {
+      hasNextPage
+      endCursor
+      hasPreviousPage
+      startCursor
     }
   }
 }
